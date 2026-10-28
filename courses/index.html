@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Explore official programme types by study level, stream and duration with Admissions Edu." />
+  <title>Course Directory | Admissions Edu</title>
+  <style>
+    :root{--ink:#151815;--lime:#c8ff72;--paper:#f5f7f2;--line:#dfe5da;--muted:#687064;--green:#527d1a}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 Arial,sans-serif}a{color:inherit}
+    header{padding:28px max(24px,calc((100% - 1180px)/2)) 44px;background:#151815;color:#fff}.topbar{display:flex;justify-content:space-between;align-items:center;gap:20px}.brand{color:var(--lime);font-weight:800;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}.topbar nav{display:flex;gap:18px}.topbar nav a{color:#dce3d8;text-decoration:none;font-weight:700}.topbar nav a:hover{color:var(--lime)}header h1{max-width:760px;margin:42px 0 8px;font-size:clamp(2.4rem,6vw,5rem);line-height:.96;letter-spacing:-.065em}header h1 em{color:var(--lime);font-style:normal}header p{max-width:700px;margin:0;color:#bec6b9;font-size:1.05rem}
+    main{width:min(1180px,calc(100% - 32px));margin:28px auto 70px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}.stat{padding:20px;background:#fff;border:1px solid var(--line);border-radius:14px}.stat strong{display:block;font-size:1.7rem}.stat span{color:var(--muted);font-size:.82rem}
+    .controls{display:grid;grid-template-columns:1fr 220px 220px;gap:10px;padding:14px;background:#fff;border:1px solid var(--line);border-radius:16px}input,select{width:100%;height:48px;padding:0 13px;border:1px solid #ccd5c7;border-radius:10px;background:#fff;font:inherit;outline:none}input:focus,select:focus{border-color:#7eae36;box-shadow:0 0 0 3px rgba(200,255,114,.4)}
+    .summary{display:flex;justify-content:space-between;gap:20px;margin:24px 2px 12px;color:var(--muted)}.summary strong{color:var(--ink)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{position:relative;min-height:235px;padding:22px;background:#fff;border:1px solid var(--line);border-radius:16px}.card:hover{border-color:#bfd78f;transform:translateY(-2px);transition:.2s}.card small{display:block;padding-right:60px;color:var(--green);font-weight:800;text-transform:uppercase;letter-spacing:.07em}.card h2{margin:14px 0 10px;font-size:1.16rem;line-height:1.28}.card p{margin:0 0 6px;color:var(--muted)}.code{position:absolute;right:16px;top:16px;max-width:90px;padding:5px 8px;border-radius:999px;background:#eff7e7;color:#4f751c;font-size:.7rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card a{position:absolute;left:22px;bottom:20px;color:#244708;font-weight:800;text-decoration:none}.empty{grid-column:1/-1;padding:60px;text-align:center;background:#fff;border:1px solid var(--line);border-radius:16px;color:var(--muted)}
+    .pager{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:24px}.pager button{padding:10px 17px;border:1px solid #bfd78f;border-radius:999px;background:#fff;font-weight:700;cursor:pointer}.pager button:disabled{opacity:.4;cursor:not-allowed}.pager span{min-width:110px;text-align:center;color:var(--muted)}.source{margin-top:54px;padding:22px;border-radius:14px;background:#eaf3df;color:#405039}.source a{font-weight:800}
+    @media(max-width:850px){.stats{grid-template-columns:1fr 1fr}.controls{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){header{padding-bottom:32px}.topbar{align-items:flex-start}.topbar nav{flex-direction:column;gap:6px;text-align:right}.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.stat{padding:15px}.card{min-height:215px}.summary{font-size:.82rem}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar"><a class="brand" href="/">Admissions Edu</a><nav><a href="/education-directory/">Universities</a><a href="/#consultation">Free consultation</a></nav></div>
+    <h1>Find the course that <em>fits your direction.</em></h1>
+    <p>Explore active programme types published by the All India Survey on Higher Education. Search by degree, study level or broad career stream.</p>
+  </header>
+  <main>
+    <section class="stats" aria-label="Course statistics">
+      <div class="stat"><strong id="course-count">—</strong><span>Programme types</span></div>
+      <div class="stat"><strong id="level-count">—</strong><span>Study levels</span></div>
+      <div class="stat"><strong id="stream-count">—</strong><span>Broad streams</span></div>
+    </section>
+    <section class="controls" aria-label="Course filters">
+      <input id="search" type="search" placeholder="Search B.Tech, MBA, nursing, design…" />
+      <select id="level"><option value="">All study levels</option></select>
+      <select id="stream"><option value="">All streams</option></select>
+    </section>
+    <div class="summary"><span><strong id="result-count">0</strong> matching programmes</span><span>Duration can vary by institution</span></div>
+    <section class="grid" id="results" aria-live="polite"></section>
+    <nav class="pager" aria-label="Pagination"><button id="previous">Previous</button><span id="page-label">Page 1</span><button id="next">Next</button></nav>
+      <aside class="source">Programme names, levels and duration options are drawn from official higher education records. Confirm exact eligibility, fees and duration with the chosen institution.</aside>
+  </main>
+  <script>
+    const pageSize=24;let records=[],filtered=[],page=1;
+    const el=id=>document.getElementById(id);const esc=value=>String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    function options(id,values){el(id).insertAdjacentHTML('beforeend',values.filter(Boolean).sort().map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join(''))}
+    const compact=value=>String(value||'').toLowerCase().replace(/[^a-z0-9]+/g,'');
+    function apply(){const q=el('search').value.trim().toLowerCase(),compactQuery=compact(q),level=el('level').value,stream=el('stream').value;filtered=records.filter(r=>{const fields=[r.name,r.short_name,r.official_name,r.stream].map(value=>String(value||'').toLowerCase()),compactFields=[r.name,r.short_name].map(compact);return(!q||fields.some(value=>value.includes(q))||compactFields.some(value=>value.includes(compactQuery)))&&(!level||r.study_level===level)&&(!stream||r.stream===stream)});page=1;render()}
+    function render(){const total=Math.max(1,Math.ceil(filtered.length/pageSize));page=Math.min(page,total);const start=(page-1)*pageSize,shown=filtered.slice(start,start+pageSize);el('result-count').textContent=filtered.length.toLocaleString();el('page-label').textContent=`Page ${page} of ${total}`;el('previous').disabled=page<=1;el('next').disabled=page>=total;el('results').innerHTML=shown.length?shown.map(r=>`<article class="card"><span class="code">${esc(r.short_name||r.programme_id)}</span><small>${esc(r.study_level)} · ${esc(r.stream)}</small><h2>${esc(r.name)}</h2><p><b>Typical duration:</b> ${esc(r.duration)}</p><p>Availability and requirements vary by institution.</p><a href="/#consultation">Get course guidance →</a></article>`).join(''):'<div class="empty">No courses match these filters.</div>';}
+    fetch('courses.json').then(r=>r.json()).then(data=>{records=data;filtered=data;el('course-count').textContent=data.length.toLocaleString();el('level-count').textContent=new Set(data.map(r=>r.study_level)).size;el('stream-count').textContent=new Set(data.map(r=>r.stream)).size;options('level',[...new Set(data.map(r=>r.study_level))]);options('stream',[...new Set(data.map(r=>r.stream))]);const q=new URLSearchParams(location.search).get('q');if(q){el('search').value=q;apply()}else render()}).catch(()=>{el('results').innerHTML='<div class="empty">Could not load the course directory.</div>'});
+    ['search','level','stream'].forEach(id=>el(id).addEventListener(id==='search'?'input':'change',apply));el('previous').onclick=()=>{page--;render();scrollTo({top:430,behavior:'smooth'})};el('next').onclick=()=>{page++;render();scrollTo({top:430,behavior:'smooth'})};
+  </script>
+</body>
+</html>

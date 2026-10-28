@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>University &amp; Exam Directory | Admissions Edu</title>
+  <style>
+    :root{--ink:#151815;--lime:#c8ff72;--paper:#f5f7f2;--line:#dfe5da;--muted:#687064}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 Arial,sans-serif}
+    header{padding:30px max(24px,calc((100% - 1180px)/2));background:#151815;color:#fff}header b{color:var(--lime);letter-spacing:.08em;text-transform:uppercase}header h1{margin:10px 0 4px;font-size:clamp(2rem,4vw,3.5rem);letter-spacing:-.05em}header p{margin:0;color:#bec6b9}
+    main{width:min(1180px,calc(100% - 32px));margin:28px auto 60px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}.stat{padding:20px;background:#fff;border:1px solid var(--line);border-radius:14px}.stat strong{display:block;font-size:1.7rem}.stat span{color:var(--muted);font-size:.82rem}
+    .controls{display:grid;grid-template-columns:1fr 230px 230px;gap:10px;padding:14px;background:#fff;border:1px solid var(--line);border-radius:16px}input,select{width:100%;height:46px;padding:0 13px;border:1px solid #ccd5c7;border-radius:10px;background:#fff;font:inherit;outline:none}input:focus,select:focus{border-color:#7eae36;box-shadow:0 0 0 3px rgba(200,255,114,.4)}
+    .summary{display:flex;justify-content:space-between;gap:20px;margin:24px 2px 12px;color:var(--muted)}.summary strong{color:var(--ink)}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{position:relative;min-height:250px;padding:22px;background:#fff;border:1px solid var(--line);border-radius:16px}.card small{display:block;padding-right:48px;color:#608f20;font-weight:800;text-transform:uppercase;letter-spacing:.07em}.card h2{margin:14px 0 8px;font-size:1.2rem;line-height:1.25}.card p{margin:0 0 6px;color:var(--muted)}.card .approval{position:absolute;right:16px;top:16px;padding:5px 8px;border-radius:999px;background:#eff7e7;color:#4f751c;font-size:.7rem;font-weight:700}.card .actions{position:absolute;left:22px;right:22px;bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}.card .actions a{color:#244708;font-weight:800;text-decoration:none}.card .actions a:last-child{color:var(--muted);font-size:.78rem;font-weight:700}.empty{grid-column:1/-1;padding:60px;text-align:center;background:#fff;border:1px solid var(--line);border-radius:16px;color:var(--muted)}
+    .pager{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:24px}.pager button{padding:10px 17px;border:1px solid #bfd78f;border-radius:999px;background:#fff;font-weight:700;cursor:pointer}.pager button:disabled{opacity:.4;cursor:not-allowed}.pager span{min-width:110px;text-align:center;color:var(--muted)}
+    .exam-section{margin-top:70px;padding-top:35px;border-top:1px solid var(--line)}.exam-section h2{margin:0 0 8px;font-size:2rem;letter-spacing:-.04em}.exam-section>p{margin:0 0 22px;color:var(--muted)}.exam-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.exam-card{min-height:170px;padding:20px;display:flex;flex-direction:column;background:#171817;color:#fff;border-radius:15px}.exam-card small{color:var(--lime);font-weight:800}.exam-card h3{margin:16px 0 8px;font-size:1rem}.exam-card a{margin-top:auto;color:var(--lime);font-weight:800;text-decoration:none}
+    @media(max-width:850px){.stats{grid-template-columns:1fr 1fr}.controls{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.exam-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.grid,.exam-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.stat{padding:15px}.card{min-height:210px}}
+  </style>
+</head>
+<body>
+  <header><b>Admissions Edu • Education directory</b><h1>Explore universities and exams</h1><p>Search official-source institution records and open verified university and examination websites.</p><p style="margin-top:14px"><a href="/" style="color:#fff;font-weight:700">Home</a> &nbsp;·&nbsp; <a href="/courses/" style="color:#c8ff72;font-weight:700">Explore courses</a></p></header>
+  <main>
+    <section class="stats" aria-label="Dataset statistics">
+      <div class="stat"><strong id="institution-count">—</strong><span>Institutions</span></div>
+      <div class="stat"><strong>1,301</strong><span>UGC universities</span></div>
+      <div class="stat"><strong>8</strong><span>Foreign campuses in India</span></div>
+      <div class="stat"><strong id="exam-count">—</strong><span>NTA exams</span></div>
+    </section>
+    <section class="controls" aria-label="Directory filters">
+      <input id="search" type="search" placeholder="Search university, state or city…" />
+      <select id="type"><option value="">All institution types</option></select>
+      <select id="state"><option value="">All states</option></select>
+    </section>
+    <div class="summary"><span><strong id="result-count">0</strong> matching records</span><span>Course records matched for 1,077 universities</span></div>
+    <section class="grid" id="results" aria-live="polite"></section>
+    <nav class="pager" aria-label="Pagination"><button id="previous">Previous</button><span id="page-label">Page 1</span><button id="next">Next</button></nav>
+    <section class="exam-section"><h2>National entrance examinations</h2><p>Official NTA examination portals collected for quick reference.</p><div class="exam-grid" id="exams"></div></section>
+  </main>
+  <script>
+    const pageSize=24;let records=[],filtered=[],page=1;
+    const el=id=>document.getElementById(id);const esc=value=>String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    function options(id,values){el(id).insertAdjacentHTML('beforeend',values.filter(Boolean).sort().map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join(''))}
+    function apply(){const q=el('search').value.trim().toLowerCase(),type=el('type').value,state=el('state').value;filtered=records.filter(r=>(!q||`${r.name} ${r.state} ${r.address}`.toLowerCase().includes(q))&&(!type||r.institution_type===type)&&(!state||r.state===state));page=1;render()}
+    function render(){const total=Math.max(1,Math.ceil(filtered.length/pageSize));page=Math.min(page,total);const start=(page-1)*pageSize,shown=filtered.slice(start,start+pageSize);el('result-count').textContent=filtered.length.toLocaleString();el('page-label').textContent=`Page ${page} of ${total}`;el('previous').disabled=page<=1;el('next').disabled=page>=total;el('results').innerHTML=shown.length?shown.map(r=>`<article class="card"><span class="approval">${esc(r.approvals||'UGC')}</span><small>${esc(r.institution_type)}</small><h2>${esc(r.name)}</h2><p>${esc(r.state||r.country)}</p><p>${esc(r.address)}</p><div class="actions"><a href="university/?id=${encodeURIComponent(r.record_id)}">View courses →</a>${r.website?`<a href="${esc(r.website)}" target="_blank" rel="noopener">Official site ↗</a>`:''}</div></article>`).join(''):'<div class="empty">No institutions match these filters.</div>';window.scrollTo({top:250,behavior:'smooth'})}
+    fetch('institutions.json').then(r=>r.json()).then(data=>{records=data;filtered=data;el('institution-count').textContent=data.length.toLocaleString();options('type',[...new Set(data.map(r=>r.institution_type))]);options('state',[...new Set(data.map(r=>r.state))]);const q=new URLSearchParams(location.search).get('q');if(q){el('search').value=q;apply()}else render()}).catch(()=>{el('results').innerHTML='<div class="empty">Could not load the directory.</div>'});
+    fetch('exams.json').then(r=>r.json()).then(data=>{el('exam-count').textContent=data.length.toLocaleString();el('exams').innerHTML=data.map(r=>`<article class="exam-card"><small>${esc(r.short_name||'NTA')}</small><h3>${esc(r.name)}</h3><a href="${esc(r.exam_url)}" target="_blank" rel="noopener">Official exam portal →</a></article>`).join('')}).catch(()=>{el('exams').innerHTML='<div class="empty">Could not load examinations.</div>'});
+    ['search','type','state'].forEach(id=>el(id).addEventListener(id==='search'?'input':'change',apply));el('previous').onclick=()=>{page--;render()};el('next').onclick=()=>{page++;render()};
+  </script>
+</body>
+</html>

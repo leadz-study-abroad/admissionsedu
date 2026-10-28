@@ -1,0 +1,39 @@
+.india-unis-hero{position:relative;overflow:hidden;padding:110px 0 105px;color:#fff;background:radial-gradient(circle at 85% 25%,rgba(200,255,114,.2),transparent 28%),linear-gradient(135deg,#111411,#242b1f)}
+.india-unis-hero::after{content:"";position:absolute;right:-80px;bottom:-180px;width:430px;height:430px;border:1px solid rgba(200,255,114,.18);border-radius:50%;box-shadow:0 0 0 55px rgba(200,255,114,.04),0 0 0 110px rgba(200,255,114,.025)}
+.india-unis-hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.25fr .55fr;gap:90px;align-items:center}
+.india-unis-hero h1{max-width:760px;margin:0;font-size:clamp(3.2rem,6.3vw,5.8rem)}
+.india-unis-hero h1 em{color:var(--lime)}
+.india-unis-hero-grid>div>p:last-of-type{max-width:690px;margin:26px 0 0;color:#d5ddd0;font-size:1.12rem;line-height:1.7}
+.india-unis-actions{justify-content:flex-start;margin-top:32px}
+.india-unis-secondary{border:1px solid rgba(255,255,255,.38);color:#fff}
+.india-unis-hero-note{padding:32px;border:1px solid rgba(255,255,255,.18);border-radius:22px;background:rgba(255,255,255,.07);backdrop-filter:blur(14px)}
+.india-unis-hero-note span{color:var(--lime);font:800 .76rem "Manrope",sans-serif;text-transform:uppercase;letter-spacing:.14em}
+.india-unis-hero-note strong{display:block;margin:26px 0 16px;font:800 2rem/1.12 "Manrope",sans-serif}
+.india-unis-hero-note p{margin:0;color:#bac4b5;line-height:1.6}
+.india-unis-list{padding:105px 0;background:#f7f9f4}
+.india-university-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.india-university-card{position:relative;min-height:410px;padding:34px;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.88);box-shadow:0 18px 45px rgba(29,40,24,.08);transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+.india-university-card:hover{transform:translateY(-9px);border-color:rgba(126,185,46,.5);box-shadow:0 28px 60px rgba(29,40,24,.15)}
+.university-mark{width:230px;height:100px;display:grid;place-items:center;padding:12px 14px;overflow:hidden;border:1px solid #e2e8de;border-radius:14px;background:#fff}
+.university-mark img{display:block;width:auto;height:auto;max-width:200px;max-height:74px;object-fit:contain}
+.york-card .university-mark img{max-width:215px;max-height:78px}
+.bristol-card .university-mark{background:#5e1a16}.bristol-card .university-mark img{max-width:215px;max-height:88px}
+.vu-card .university-mark{background:#111}.vu-card .university-mark img{max-width:215px;max-height:88px}
+.illinois-card .university-mark{background:#221f20}.illinois-card .university-mark img{max-width:180px;max-height:88px}
+.university-number{position:absolute;right:34px;top:34px;color:#899780;font:800 .78rem "Manrope",sans-serif}
+.university-type{margin:30px 0 10px;color:#619326;text-transform:uppercase;letter-spacing:.12em;font:800 .72rem "Manrope",sans-serif}
+.india-university-card h3{margin:0;font-size:clamp(1.75rem,3vw,2.35rem)}
+.india-university-card ul{display:flex;flex-wrap:wrap;gap:9px;margin:22px 0 0;padding:0;list-style:none}
+.india-university-card li{padding:7px 10px;border-radius:999px;background:#eef4e9;color:#596456;font-size:.78rem}
+.india-university-card>a{margin-top:auto;padding-top:32px;color:#365e0b;font-weight:800;text-decoration:none}
+.india-university-card>a:hover{text-decoration:underline;text-underline-offset:4px}
+.india-unis-help{padding:100px 0;background:#fff}
+.india-unis-help-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.india-unis-help-grid article{padding:30px;border:1px solid var(--line);border-radius:18px;background:var(--paper)}
+.india-unis-help-grid span{color:#67942f;font:800 .76rem "Manrope",sans-serif}
+.india-unis-help-grid h3{margin:35px 0 12px;font-size:1.3rem}
+.india-unis-help-grid p{margin:0;color:var(--muted);line-height:1.65}
+@media(max-width:1100px){.india-university-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:960px){.india-unis-hero-grid{grid-template-columns:1fr;gap:45px}.india-unis-hero-note{max-width:520px}.india-unis-hero{padding:85px 0}.india-unis-help-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.india-unis-hero{padding:70px 0}.india-unis-hero h1{font-size:2.85rem}.india-unis-actions{flex-direction:column}.india-unis-list,.india-unis-help{padding:75px 0}.india-university-card{min-height:385px;padding:26px}.university-number{right:26px;top:26px}.india-unis-help-grid{grid-template-columns:1fr}}
+@media(max-width:720px){.india-university-grid{grid-template-columns:1fr}}
